@@ -2,7 +2,7 @@
 -- BMNT PAYROLL SYSTEM - SUPABASE SCHEMA
 -- =============================================================
 create extension if not exists pgcrypto;
-create extension if not exists uuid-ossp;
+create extension if not exists "uuid-ossp";
 
 -- =============================================================
 -- 1. profiles
@@ -194,27 +194,27 @@ alter table public.documents enable row level security;
 alter table public.activity_logs enable row level security;
 alter table public.settings enable row level security;
 
-create policy if not exists profiles_select_all on public.profiles for select using (true);
-create policy if not exists profiles_update_own on public.profiles for update using (auth.uid() = id);
-create policy if not exists profiles_insert_self on public.profiles for insert with check (auth.uid() = id);
+create policy profiles_select_all on public.profiles for select using (true);
+create policy profiles_update_own on public.profiles for update using (auth.uid() = id);
+create policy profiles_insert_self on public.profiles for insert with check (auth.uid() = id);
 
-create policy if not exists employees_select_all on public.employees for select using (true);
-create policy if not exists employees_modify_all on public.employees for all using (true) with check (true);
+create policy employees_select_all on public.employees for select using (true);
+create policy employees_modify_all on public.employees for all using (true) with check (true);
 
-create policy if not exists typists_select_all on public.typists for select using (true);
-create policy if not exists typists_modify_all on public.typists for all using (true) with check (true);
+create policy typists_select_all on public.typists for select using (true);
+create policy typists_modify_all on public.typists for all using (true) with check (true);
 
-create policy if not exists payslips_select_all on public.payslips for select using (true);
-create policy if not exists payslips_modify_all on public.payslips for all using (true) with check (true);
+create policy payslips_select_all on public.payslips for select using (true);
+create policy payslips_modify_all on public.payslips for all using (true) with check (true);
 
-create policy if not exists documents_select_all on public.documents for select using (true);
-create policy if not exists documents_modify_all on public.documents for all using (true) with check (true);
+create policy documents_select_all on public.documents for select using (true);
+create policy documents_modify_all on public.documents for all using (true) with check (true);
 
-create policy if not exists activity_logs_read_all on public.activity_logs for select using (true);
-create policy if not exists activity_logs_insert_all on public.activity_logs for insert with check (true);
+create policy activity_logs_read_all on public.activity_logs for select using (true);
+create policy activity_logs_insert_all on public.activity_logs for insert with check (true);
 
-create policy if not exists settings_read_all on public.settings for select using (true);
-create policy if not exists settings_manage_all on public.settings for all using (true) with check (true);
+create policy settings_read_all on public.settings for select using (true);
+create policy settings_manage_all on public.settings for all using (true) with check (true);
 
 -- =============================================================
 -- Storage Buckets
@@ -227,11 +227,11 @@ values
   ('generated-payslips', 'generated-payslips', true)
 on conflict (id) do nothing;
 
-create policy if not exists company_logo_read on storage.objects for select using (bucket_id = 'company-logo');
-create policy if not exists company_logo_write on storage.objects for insert with check (bucket_id = 'company-logo');
-create policy if not exists profile_pictures_read on storage.objects for select using (bucket_id = 'profile-pictures');
-create policy if not exists profile_pictures_write on storage.objects for insert with check (bucket_id = 'profile-pictures');
-create policy if not exists documents_read on storage.objects for select using (bucket_id = 'documents');
-create policy if not exists documents_write on storage.objects for insert with check (bucket_id = 'documents');
-create policy if not exists payslips_read on storage.objects for select using (bucket_id = 'generated-payslips');
-create policy if not exists payslips_write on storage.objects for insert with check (bucket_id = 'generated-payslips');
+create policy company_logo_read on storage.objects for select using (bucket_id = 'company-logo');
+create policy company_logo_write on storage.objects for insert with check (bucket_id = 'company-logo');
+create policy profile_pictures_read on storage.objects for select using (bucket_id = 'profile-pictures');
+create policy profile_pictures_write on storage.objects for insert with check (bucket_id = 'profile-pictures');
+create policy documents_read on storage.objects for select using (bucket_id = 'documents');
+create policy documents_write on storage.objects for insert with check (bucket_id = 'documents');
+create policy payslips_read on storage.objects for select using (bucket_id = 'generated-payslips');
+create policy payslips_write on storage.objects for insert with check (bucket_id = 'generated-payslips');
