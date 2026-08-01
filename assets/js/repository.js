@@ -170,14 +170,3 @@ async function saveBlobToComputer(blob, suggestedName) {
     showToast('Download started.', 'success');
 }
 
-let pendingDocReady = null;
-
-function openDocReadyModal(blob, filename) {
-    pendingDocReady = { blob, filename };
-
-    document.getElementById('docReadyName').innerText = filename;
-    document.getElementById('docReadySize').innerText =
-        fmtBytes(blob.size) + ' · PDF Document';
-
-    openModal('docReadyModal');
-}
