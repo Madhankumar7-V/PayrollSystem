@@ -158,6 +158,4 @@ async function bootstrapApp() {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  bootstrapApp();
-});
+
