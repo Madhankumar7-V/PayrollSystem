@@ -2,7 +2,7 @@
    BMNT PAYROLL — SUPABASE COMPATIBILITY LAYER
    ========================================================================== */
 
-const SUPABASE_URL = 'https://cvvwmjfzdoukqtbcauet.supabase.cohttps://cvvwmjfzdoukqtbcauet.supabase.co';
+const SUPABASE_URL = 'https://cvvwmjfzdoukqtbcauet.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2dndtamZ6ZG91a3F0YmNhdWV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1NzkxMDUsImV4cCI6MjEwMTE1NTEwNX0.rBJA_tAXQ66VLkHT_73SQG55kKZt6yKJwDlh0xqVuQI';
 
 let supabaseClient = null;
