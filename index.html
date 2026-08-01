@@ -79,12 +79,13 @@
             <li data-target="documents" data-tip="Documents"><i class="fa-solid fa-folder-open"></i><span class="label">Documents</span><span class="nav-badge" id="navDocBadge">0</span></li>
         </ul>
         <div class="sidebar-footer">
-            <div class="user-chip">
+            <div class="user-chip" id="sidebarUserChip">
                 <div class="user-avatar" id="userAvatar">U</div>
-                <div class="user-meta"><b id="userChipName">User</b><span>Question Cell Dept.</span></div>
+                <div class="user-meta"><b id="userChipName">User</b><span id="userChipDesignation">Loading...</span></div>
             </div>
             <div class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i> <span>Dark Mode</span></div>
-            <div class="kbd-hint"><i class="fa-solid fa-keyboard" style="width:14px;"></i><span>Search <kbd>Ctrl</kbd>+<kbd>K</kbd></span></div>
+            <button class="btn btn-secondary btn-sm" id="profileBtn" type="button" onclick="openProfilePanel()" style="width:100%; justify-content:center; margin-top:8px;"><i class="fa-solid fa-user"></i> Profile</button>
+            <button class="btn btn-danger btn-sm" id="logoutBtn" type="button" onclick="handleLogout()" style="width:100%; justify-content:center; margin-top:8px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
     </nav>
 
@@ -451,6 +452,28 @@
                 <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Save Employee</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal" id="profileModal">
+    <div class="modal-content" style="width:520px; max-width:92vw;">
+        <h2><i class="fa-solid fa-user"></i> Profile</h2>
+        <div class="doc-ready-preview" style="margin:10px 0 18px;">
+            <div class="user-avatar" id="profileAvatar" style="width:54px; height:54px; font-size:20px;">U</div>
+            <div><b id="profileName">User</b><span id="profileDesignation">Loading...</span></div>
+        </div>
+        <div class="summary-grid" style="margin-top:8px;">
+            <div><strong>Role:</strong> <span id="profileRole">-</span></div>
+            <div><strong>Employee ID:</strong> <span id="profileEmployeeId">-</span></div>
+            <div><strong>Email:</strong> <span id="profileEmail">-</span></div>
+            <div><strong>Phone:</strong> <span id="profilePhone">-</span></div>
+            <div><strong>Last Login:</strong> <span id="profileLastLogin">-</span></div>
+            <div><strong>Created:</strong> <span id="profileCreatedAt">-</span></div>
+        </div>
+        <div class="modal-actions" style="margin-top:16px;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('profileModal')">Close</button>
+        </div>
     </div>
 </div>
 

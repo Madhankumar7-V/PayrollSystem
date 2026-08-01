@@ -92,15 +92,16 @@ function initLogin() {
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('loginName').value.trim() || 'Staff';
+      const loginName = document.getElementById('loginName').value.trim() || 'Staff';
       const password = document.getElementById('loginPass').value.trim();
       const btnText = document.getElementById('loginBtnText');
       btnText.innerHTML = '<span class="spinner" style="display:inline-block;border-color:rgba(255,255,255,.4);border-top-color:#fff;"></span>';
-      const result = await signInWithSupabase(name, password);
+      const result = await signInWithSupabase(loginName, password);
       if (result.success) {
-        sessionStorage.setItem('bmnt_user_name', name);
+        sessionStorage.setItem('bmnt_user_name', loginName);
         sessionStorage.setItem('bmnt_signed_in', '1');
-        applyUserChip(result.profile?.name || name);
+        await loadProfile(currentUser?.id || '');
+        applyUserChip(currentProfile?.name || loginName);
         if (screen) screen.classList.add('hidden');
         showToast('Signed in successfully.', 'success');
       } else {
@@ -114,8 +115,52 @@ function initLogin() {
 function applyUserChip(name) {
   const chipName = document.getElementById('userChipName');
   const userAvatar = document.getElementById('userAvatar');
-  if (chipName) chipName.innerText = name;
-  if (userAvatar) userAvatar.innerText = name.trim().charAt(0).toUpperCase() || 'U';
+  const designationEl = document.getElementById('userChipDesignation');
+  if (chipName) chipName.innerText = name || 'User';
+  if (userAvatar) userAvatar.innerText = (name || 'U').trim().charAt(0).toUpperCase() || 'U';
+  if (designationEl) designationEl.innerText = currentProfile?.designation || 'User';
+}
+
+async function handleLogout() {
+  try {
+    await signOutSupabase();
+    sessionStorage.clear();
+    document.body.classList.remove('dark');
+    document.body.dataset.theme = 'light';
+    showToast('Logged out successfully.', 'success');
+    window.location.href = 'index.html';
+  } catch (err) {
+    showToast('Unable to log out right now.', 'error');
+  }
+}
+
+function openProfilePanel() {
+  showProfileModal();
+}
+
+function showProfileModal() {
+  const profileModal = document.getElementById('profileModal');
+  const profileName = document.getElementById('profileName');
+  const profileDesignation = document.getElementById('profileDesignation');
+  const profileRole = document.getElementById('profileRole');
+  const profileEmployeeId = document.getElementById('profileEmployeeId');
+  const profileEmail = document.getElementById('profileEmail');
+  const profilePhone = document.getElementById('profilePhone');
+  const profileLastLogin = document.getElementById('profileLastLogin');
+  const profileCreatedAt = document.getElementById('profileCreatedAt');
+  const profileAvatar = document.getElementById('profileAvatar');
+
+  if (profileName) profileName.innerText = currentProfile?.name || 'User';
+  if (profileDesignation) profileDesignation.innerText = currentProfile?.designation || 'User';
+  if (profileRole) profileRole.innerText = currentProfile?.role || '-';
+  if (profileEmployeeId) profileEmployeeId.innerText = currentProfile?.employee_id || '-';
+  if (profileEmail) profileEmail.innerText = currentProfile?.email || '-';
+  if (profilePhone) profilePhone.innerText = currentProfile?.phone || '-';
+  if (profileLastLogin) profileLastLogin.innerText = currentProfile?.last_login ? new Date(currentProfile.last_login).toLocaleString() : '-';
+  if (profileCreatedAt) profileCreatedAt.innerText = currentProfile?.created_at ? new Date(currentProfile.created_at).toLocaleString() : '-';
+  if (profileAvatar) profileAvatar.innerText = (currentProfile?.name || 'U').trim().charAt(0).toUpperCase() || 'U';
+
+  if (profileModal) openModal('profileModal');
 }
 
 function initKeyboardShortcuts() {
