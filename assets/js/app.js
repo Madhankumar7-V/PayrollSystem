@@ -1,13 +1,17 @@
 /* ==========================================================================
    BMNT PAYROLL — MAIN APPLICATION ENTRY POINT
    ========================================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof initUIElements === 'function') initUIElements();
-  if (typeof initLogin === 'function') initLogin();
-  if (typeof updateDashboard === 'function') updateDashboard();
-  if (typeof renderEmployees === 'function') renderEmployees();
-  if (typeof renderDocuments === 'function') renderDocuments();
-  if (typeof refreshDashboard === 'function') refreshDashboard();
+document.addEventListener('DOMContentLoaded', async () => {
+  if (typeof bootstrapApp === 'function') {
+    await bootstrapApp();
+  } else {
+    if (typeof initUIElements === 'function') initUIElements();
+    if (typeof initLogin === 'function') initLogin();
+    if (typeof updateDashboard === 'function') updateDashboard();
+    if (typeof renderEmployees === 'function') renderEmployees();
+    if (typeof renderDocuments === 'function') renderDocuments();
+    if (typeof refreshDashboard === 'function') refreshDashboard();
+  }
 
   const now = new Date();
   const currentMonthYearEl = document.getElementById('currentMonthYear');
