@@ -1,0 +1,32 @@
+/* ==========================================================================
+   BMNT PAYROLL — RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  .global-search {
+    display: none;
+  }
+  .main-content {
+    padding: 20px 16px 60px;
+  }
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media print {
+  .sidebar,
+  .topbar {
+    display: none;
+  }
+}

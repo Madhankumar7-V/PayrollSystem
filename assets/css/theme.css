@@ -1,0 +1,50 @@
+/* ==========================================================================
+   BMNT PAYROLL — DARK MODE THEME OVERRIDES
+   ========================================================================== */
+body.dark {
+  --ink: #eaf3f1;
+  --ink-soft: #b9d0cd;
+  --ink-faint: #6f8b88;
+  --paper: #081815;
+  --paper-raise: #0f2624;
+  --paper-sunk: #0a1e1c;
+  --border: rgba(255, 255, 255, .09);
+  --border-strong: rgba(255, 255, 255, .16);
+  --danger: #e5695c;
+  --danger-soft: #2c1613;
+  --success: #3fbf8c;
+  --success-soft: #0f2b21;
+  --info: #5cb3e0;
+  --info-soft: #0f2530;
+  --glass-bg: rgba(15, 38, 36, .6);
+  --glass-border: rgba(255, 255, 255, .08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, .35);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, .5);
+}
+
+body.dark .brand-text b {
+  color: var(--teal-300);
+}
+
+body.dark .stat-card::after {
+  background: radial-gradient(circle, rgba(15, 138, 139, .18) 0%, transparent 70%);
+}
+
+body.dark .activity-icon {
+  background: rgba(15, 138, 139, .18);
+  color: var(--teal-300);
+}
+
+body.dark .badge-teal {
+  background: rgba(15, 138, 139, .2);
+  color: var(--teal-300);
+}
+
+body.dark .form-section h3 {
+  color: var(--teal-300);
+}
+
+body.dark .net-pay-display {
+  color: var(--teal-300);
+}

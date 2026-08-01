@@ -1,0 +1,43 @@
+/* ==========================================================================
+   BMNT PAYROLL — DESIGN SYSTEM VARIABLES
+   ========================================================================== */
+:root {
+  --teal-900: #003233;
+  --teal-800: #003f40;
+  --teal-700: #005b5c;
+  --teal-600: #00787a;
+  --teal-500: #0f8a8b;
+  --teal-300: #6fc2c1;
+  --teal-100: #dcefee;
+  --gold: #f4b400;
+  --gold-soft: #ffe9ab;
+  --gold-deep: #c98f00;
+  --ink: #0e2524;
+  --ink-soft: #3c5453;
+  --ink-faint: #7a908f;
+  --paper: #f6f4ee;
+  --paper-raise: #ffffff;
+  --paper-sunk: #eeece3;
+  --border: rgba(14, 37, 36, .10);
+  --border-strong: rgba(14, 37, 36, .18);
+  --danger: #c8483b;
+  --danger-soft: #fbe8e5;
+  --success: #1f8a5f;
+  --success-soft: #e5f5ed;
+  --info: #0f6fa0;
+  --info-soft: #e3f1f8;
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(14, 37, 36, .06), 0 1px 1px rgba(14, 37, 36, .04);
+  --shadow-md: 0 8px 24px rgba(14, 37, 36, .09), 0 2px 6px rgba(14, 37, 36, .06);
+  --shadow-lg: 0 20px 50px rgba(14, 37, 36, .16), 0 6px 16px rgba(14, 37, 36, .08);
+  --glass-bg: rgba(255, 255, 255, .62);
+  --glass-border: rgba(255, 255, 255, .5);
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --sidebar-w: 264px;
+  --sidebar-w-collapsed: 80px;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}

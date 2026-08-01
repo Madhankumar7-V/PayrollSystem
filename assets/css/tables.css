@@ -1,0 +1,120 @@
+/* ==========================================================================
+   BMNT PAYROLL — TABLES & BADGES STYLES
+   ========================================================================== */
+.table-container {
+  background: var(--paper-raise);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 13px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+th {
+  background: var(--paper-sunk);
+  color: var(--ink-soft);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+th:hover {
+  color: var(--teal-600);
+}
+th i.sort-ic {
+  margin-left: 5px;
+  font-size: 9px;
+  opacity: .5;
+}
+tbody tr {
+  transition: background .15s;
+}
+tbody tr:hover {
+  background: var(--paper-sunk);
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cell-mono {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-teal {
+  background: var(--teal-100);
+  color: var(--teal-800);
+}
+.badge-gold {
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+}
+.badge-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.badge-success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.badge-info {
+  background: var(--info-soft);
+  color: var(--info);
+}
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--paper-sunk);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.pagination {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.pagination button {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--border-strong);
+  background: var(--paper-raise);
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+.pagination button.active {
+  background: var(--teal-700);
+  color: #fff;
+  border-color: var(--teal-700);
+}
+.pagination button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
