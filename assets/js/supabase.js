@@ -2,8 +2,8 @@
    BMNT PAYROLL — SUPABASE COMPATIBILITY LAYER
    ========================================================================== */
 
-const SUPABASE_URL = window.__SUPABASE_URL__ || '';
-const SUPABASE_ANON_KEY = window.__SUPABASE_ANON_KEY__ || '';
+const SUPABASE_URL = 'https://cvvwmjfzdoukqtbcauet.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2dndtamZ6ZG91a3F0YmNhdWV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1NzkxMDUsImV4cCI6MjEwMTE1NTEwNX0.rBJA_tAXQ66VLkHT_73SQG55kKZt6yKJwDlh0xqVuQI';
 
 let supabase = null;
 let currentUser = null;
@@ -31,13 +31,40 @@ async function initSupabase() {
   return false;
 }
 
-async function signInWithSupabase(email, password) {
-  if (!supabase) return { success: false, error: 'Supabase not configured' };
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) return { success: false, error: error.message };
+async function signInWithSupabase(username, password) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase not configured' };
+  }
+
+  // Find the user's email from the profiles table
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('email')
+    .eq('username', username)
+    .single();
+
+  if (profileError || !profile) {
+    return { success: false, error: 'User not found.' };
+  }
+
+  // Sign in using email + password
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: profile.email,
+    password: password
+  });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
   currentUser = data.user;
+
   await loadProfile(data.user.id);
-  return { success: true, user: data.user };
+
+  return {
+    success: true,
+    user: data.user
+  };
 }
 
 async function signOutSupabase() {
