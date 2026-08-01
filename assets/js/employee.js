@@ -26,7 +26,7 @@ function closeEmpModal() {
   closeModal('empModal');
 }
 
-function saveEmployee(e) {
+async function saveEmployee(e) {
   e.preventDefault();
   const index = document.getElementById('empIndex').value;
   const empData = {
@@ -39,8 +39,20 @@ function saveEmployee(e) {
   const isEdit = index != -1;
   if (!isEdit) employees.push(empData);
   else employees[index] = empData;
-  localStorage.setItem('employees', JSON.stringify(employees));
+  try {
+    await upsertRecord('employees', {
+      employee_id: empData.qcid,
+      name: empData.name,
+      department: empData.department,
+      designation: empData.designation,
+      joining_date: empData.joinDate,
+      created_by: currentUser?.id || null
+    }, isEdit ? 'employee_id' : null);
+  } catch (err) {
+    console.error(err);
+  }
   closeEmpModal();
+  await syncLocalState();
   renderEmployees();
   populateEmployeeDropdowns();
   updateDashboard();
@@ -52,7 +64,12 @@ async function deleteEmployee(index) {
   const ok = await confirmAction(`Delete ${emp.name} (${emp.qcid})? This cannot be undone.`, 'Delete Employee');
   if (ok) {
     employees.splice(index, 1);
-    localStorage.setItem('employees', JSON.stringify(employees));
+    try {
+      await supabase?.from('employees').delete().eq('employee_id', emp.qcid);
+    } catch (err) {
+      console.error(err);
+    }
+    await syncLocalState();
     renderEmployees();
     populateEmployeeDropdowns();
     updateDashboard();

@@ -35,8 +35,8 @@ function initUIElements() {
     themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark');
       const isDark = document.body.classList.contains('dark');
+      document.body.dataset.theme = isDark ? 'dark' : 'light';
       themeToggle.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i> <span>Light Mode</span>' : '<i class="fa-solid fa-moon"></i> <span>Dark Mode</span>';
-      localStorage.setItem('bmnt_theme', isDark ? 'dark' : 'light');
       if (window._payrollChart) renderPayrollChart();
     });
   }
@@ -60,7 +60,8 @@ function goToSection(target) {
 
 function initTheme() {
   themeToggle = document.getElementById('themeToggle');
-  if (localStorage.getItem('bmnt_theme') === 'dark') {
+  const storedTheme = document.body.dataset.theme || 'light';
+  if (storedTheme === 'dark') {
     document.body.classList.add('dark');
     if (themeToggle) themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i> <span>Light Mode</span>';
   }
@@ -72,35 +73,40 @@ function initSidebarCollapse() {
   if (btn && sidebar) {
     btn.addEventListener('click', () => {
       sidebar.classList.toggle('collapsed');
-      localStorage.setItem('bmnt_sidebar_collapsed', sidebar.classList.contains('collapsed') ? '1' : '0');
+      document.body.dataset.sidebarCollapsed = sidebar.classList.contains('collapsed') ? '1' : '0';
     });
-    if (localStorage.getItem('bmnt_sidebar_collapsed') === '1') sidebar.classList.add('collapsed');
+    if (document.body.dataset.sidebarCollapsed === '1') sidebar.classList.add('collapsed');
   }
 }
 
 function initLogin() {
-  const storedName = localStorage.getItem('bmnt_user_name');
   const screen = document.getElementById('loginScreen');
-  if (sessionStorage.getItem('bmnt_signed_in') === '1' && storedName) {
-    applyUserChip(storedName);
+  const storedName = sessionStorage.getItem('bmnt_user_name');
+  if (currentProfile && currentProfile.name) {
+    applyUserChip(currentProfile.name);
     if (screen) screen.classList.add('hidden');
     return;
   }
   if (storedName) document.getElementById('loginName').value = storedName;
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('loginName').value.trim() || 'Staff';
+      const password = document.getElementById('loginPass').value.trim();
       const btnText = document.getElementById('loginBtnText');
       btnText.innerHTML = '<span class="spinner" style="display:inline-block;border-color:rgba(255,255,255,.4);border-top-color:#fff;"></span>';
-      setTimeout(() => {
-        localStorage.setItem('bmnt_user_name', name);
+      const result = await signInWithSupabase(name, password);
+      if (result.success) {
+        sessionStorage.setItem('bmnt_user_name', name);
         sessionStorage.setItem('bmnt_signed_in', '1');
-        applyUserChip(name);
+        applyUserChip(result.profile?.name || name);
         if (screen) screen.classList.add('hidden');
-        btnText.innerText = 'Sign In';
-      }, 550);
+        showToast('Signed in successfully.', 'success');
+      } else {
+        showToast(result.error || 'Unable to sign in.', 'error');
+      }
+      btnText.innerText = 'Sign In';
     });
   }
 }

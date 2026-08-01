@@ -22,7 +22,7 @@ function loadTypistDashboard() {
   renderTypistTable();
 }
 
-function saveTypistWork(e) {
+async function saveTypistWork(e) {
   e.preventDefault();
   const index = document.getElementById('tweIndex').value;
   const empIndex = document.getElementById('twSelect').value;
@@ -47,8 +47,22 @@ function saveTypistWork(e) {
   if (index === "-1") typistEntries.push(entry);
   else typistEntries[index] = entry;
 
-  localStorage.setItem('typistEntries', JSON.stringify(typistEntries));
+  try {
+    await upsertRecord('typists', {
+      id: entry.id,
+      employee_ref: emp.qcid,
+      month: filterMonth,
+      year: filterYear,
+      work_count: Number(entry.work) || 0,
+      rate: 0,
+      amount: entry.net,
+      created_by: currentUser?.id || null
+    }, 'id');
+  } catch (err) {
+    console.error(err);
+  }
   resetTweForm();
+  await syncLocalState();
   renderTypistTable();
   updateDashboard();
   showToast('Work entry saved.', 'success');
@@ -69,8 +83,14 @@ function editTypistEntry(index) {
 async function deleteTypistEntry(index) {
   const ok = await confirmAction('Delete this work entry? This cannot be undone.', 'Delete Entry');
   if (ok) {
+    const entry = typistEntries[index];
     typistEntries.splice(index, 1);
-    localStorage.setItem('typistEntries', JSON.stringify(typistEntries));
+    try {
+      await supabase?.from('typists').delete().eq('id', entry.id);
+    } catch (err) {
+      console.error(err);
+    }
+    await syncLocalState();
     renderTypistTable();
     updateDashboard();
     showToast('Entry deleted.', 'success');

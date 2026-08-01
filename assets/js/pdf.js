@@ -55,7 +55,23 @@ async function generateSinglePDF() {
   const emp = employees[empIndex];
   const payData = getPayslipFormData();
   payslips.push({ empId: emp.qcid, month: payData.month, netPay: payData.netPay, date: new Date().toISOString() });
-  localStorage.setItem('payslips', JSON.stringify(payslips));
+  try {
+    await upsertRecord('payslips', {
+      employee_ref: emp.qcid,
+      month: payData.month,
+      year: new Date().getFullYear().toString(),
+      gross_salary: Number(payData.gross || 0),
+      allowances: Number(payData.e1 || 0),
+      deductions: Number(payData.totalDed || 0),
+      net_salary: Number(payData.netPay || 0),
+      generated_by: currentUser?.id || null,
+      pdf_url: null,
+      remarks: 'Generated via app'
+    });
+  } catch (err) {
+    console.error(err);
+  }
+  await syncLocalState();
   updateDashboard();
   populatePDFTemplate(emp, payData);
   const pdf = await renderPDF();
